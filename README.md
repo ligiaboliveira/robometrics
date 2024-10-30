@@ -57,7 +57,3 @@ Antes de começar, certifique-se de ter instalado:
 8. Acesse a aplicação em seu navegador web:
     
     http://127.0.0.1:8000/
-    
-
-## Licença
-Este projeto está licenciado sob a Licença XYZ - veja o arquivo [LICENSE](LICENSE) para mais detalhes.
