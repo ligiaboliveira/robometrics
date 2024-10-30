@@ -1,0 +1,27 @@
+<!-- algoritmo_genetico/templates/algoritmo_genetico/result.html -->
+{% extends 'base.html' %}
+
+{% block title %}
+    Resultado do Algoritmo Genético
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Melhores resultados simulados</h1>
+    <div class="row justify-content-center mt-5">
+        {% for child in best_children %}
+            <div class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Filho</h5>
+                        <p class="card-text"><strong>P:</strong> {{ child.P }}</p>
+                        <p class="card-text"><strong>I:</strong> {{ child.I }}</p>
+                        <p class="card-text"><strong>D:</strong> {{ child.D }}</p>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
+

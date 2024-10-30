@@ -1,0 +1,79 @@
+{% extends 'base.html' %} {% block content %}
+
+<div class="d-flex justify-content-end mb-3"> <!-- Align to the right -->
+    {% comment %} <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#createRoboModal">
+        <i class="bi bi-plus"></i> Adicionar robô <!-- Plus icon -->
+    </button> {% endcomment %}
+</div>
+<h1>Lista de Robôs</h1>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Equipe</th>
+      <th>Nome do robô</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for robo in robos %}
+    <tr>
+      <td>{{robo.id_equipe.equipe}}</td>
+      <td>{{robo.nome_robo}}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% comment %} <div
+  class="modal fade"
+  id="createRoboModal"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="createRoboModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="createRoboModalLabel">Adicionar Robô</h5>
+        <button type="button"class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Form fields to create a new Corrida -->
+        <form action="{% url 'create_robos' %}" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="equipe">Equipe</label>
+            <input
+              type="text"
+              class="form-control"
+              id="equipe"
+              name="equipe"
+              placeholder="Digite o nome da equipe"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="nome_robo">Nome do Robôs</label>
+            <input
+              type="text"
+              class="form-control"
+              id="robos"
+              name="id_robos"
+              placeholder="Digite o nome do robo"
+            />
+          </div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">
+              Adicionar robô
+            </button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            <!-- Button to create the Corrida -->
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> {% endcomment %}
+
+{% endblock %}

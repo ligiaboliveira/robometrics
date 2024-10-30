@@ -1,0 +1,47 @@
+{% load bootstrap5 %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <!-- Bootstrap CSS -->
+    {% bootstrap_css %}
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h1 class="text-center">LOGIN</h1>
+                    </div>
+                    <div class="card-body">
+                        <form action="{% url 'login' %}" method="POST">
+                            {% csrf_token %}
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Usuário</label>
+                                <input type="text" class="form-control" id="username" name="username" placeholder="Digite seu usuário">
+                            </div>
+                            <div class="mb-3">
+                                <label for="senha" class="form-label">Senha</label>
+                                <input type="password" class="form-control" id="senha" name="senha" placeholder="Digite sua senha">
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-lg btn-block">Entrar</button>
+                        </form>
+                    </div>
+                    <div class="card-footer text-center">
+                        <button class="btn btn-link" onclick="window.location.href='{% url 'cadastro' %}'">Cadastro</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    {% bootstrap_javascript %}
+</body>
+
+</html>

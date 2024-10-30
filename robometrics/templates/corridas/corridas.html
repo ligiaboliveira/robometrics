@@ -1,0 +1,152 @@
+{% extends 'base.html' %}
+
+{% block title %}Corridas{% endblock %}
+
+{% block content %}
+<h2> Corridas</h2>
+<!-- Button to trigger the modal -->
+<div class="row">
+  <div class="mt-5">
+    <h3>Upload PID</h3>
+    <form method="post" action="{% url 'upload_file' %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="file" class="form-label">Escolha um arquivo para inserir</label>
+            <input type="file" class="form-control" id="file" name="file" onchange="toggleSubmitButton()">
+        </div>
+        <button type="submit" id="submit-button" class="btn btn-primary" style="display: none;">Upload</button>
+    </form>
+  </div>
+</div>
+
+  <div class="d-flex justify-content-end mb-3 mt-5"> <!-- Align to the right -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#criarPIDmodal">
+        <i class="bi bi-plus"></i> Simular algoritmo PID <!-- Plus icon -->
+    </button>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+          <th>Proporcional</th>
+          <th>Integral</th>
+          <th>Derivativo</th>
+          <th>Tempo</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for corrida in corridas %}
+        <tr>
+            <td>{{ corrida.P }}</td>
+            <td>{{ corrida.I }}</td>
+            <td>{{ corrida.D }}</td>
+            <td>{{ corrida.tempo }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<!-- Modal -->
+<div class="modal fade" id="criarPIDmodal" tabindex="-1" role="dialog" aria-labelledby="criarPIDmodalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="criarPIDmodalLabel">Simular algoritmo PID</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <!-- Form fields to create a new Corrida -->
+        <form id="pid-form" action="{% url 'create_pid' %}" method="POST">
+          {% csrf_token %}
+          
+          <div id="pid-container">
+              <div class="pid-entry mb-3">
+                  <div class="mb-3">
+                      <label for="P">Proporcional</label>
+                      <input type="text" class="form-control" name="P" placeholder="Digite o Proporcional">
+                  </div>
+                  <div class="mb-3">
+                      <label for="I">Integral</label>
+                      <input type="text" class="form-control" name="I" placeholder="Digite o Integral">
+                  </div>
+                  <div class="mb-3">
+                      <label for="D">Derivativo</label>
+                      <input type="text" class="form-control" name="D" placeholder="Digite o Derivativo">
+                  </div>
+              </div>
+          </div>
+          
+          <button type="button" id="add-pid" class="btn btn-secondary mb-3">Adicionar PID</button>
+          
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+              <button type="submit" class="btn btn-primary">Salvar PID</button>
+          </div>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+
+function toggleSubmitButton() {
+    var fileInput = document.getElementById('file');
+    var submitButton = document.getElementById('submit-button');
+
+    if (fileInput.files.length > 0) {
+        submitButton.style.display = 'block';
+    } else {
+        submitButton.style.display = 'none';
+    }
+}
+
+  document.getElementById('add-pid').addEventListener('click', function() {
+      var container = document.getElementById('pid-container');
+      var newEntry = document.createElement('div');
+      newEntry.className = 'pid-entry mb-3';
+      newEntry.innerHTML = `
+          <div class="mb-3">
+              <label for="P">Proporcional</label>
+              <input type="text" class="form-control" name="P" placeholder="Digite o Proporcional">
+          </div>
+          <div class="mb-3">
+              <label for="I">Integral</label>
+              <input type="text" class="form-control" name="I" placeholder="Digite o Integral">
+          </div>
+          <div class="mb-3">
+              <label for="D">Derivativo</label>
+              <input type="text" class="form-control" name="D" placeholder="Digite o Derivativo">
+          </div>
+      `;
+      container.appendChild(newEntry);
+
+      // Create new tab
+      var tabContent = document.getElementById('myTabContent');
+      var tabPane = document.createElement('div');
+      tabPane.className = 'tab-pane fade';
+      tabPane.id = 'pid-tab-' + tabContent.children.length;
+      tabPane.setAttribute('role', 'tabpanel');
+      tabPane.setAttribute('aria-labelledby', 'pid-tab-' + tabContent.children.length);
+
+      var tabLink = document.createElement('button');
+      tabLink.className = 'nav-link';
+      tabLink.setAttribute('data-bs-toggle', 'tab');
+      tabLink.setAttribute('data-bs-target', '#pid-tab-' + tabContent.children.length);
+      tabLink.setAttribute('role', 'tab');
+      tabLink.setAttribute('aria-controls', 'pid-tab-' + tabContent.children.length);
+      tabLink.setAttribute('aria-selected', 'false');
+      tabLink.textContent = 'PID ' + tabContent.children.length;
+
+      tabLink.addEventListener('click', function() {
+        $(this).tab('show');
+      });
+
+      tabPane.appendChild(newEntry);
+      tabContent.appendChild(tabPane);
+      document.getElementById('myTab').appendChild(tabLink);
+  });
+</script>
+
+{% endblock %}
